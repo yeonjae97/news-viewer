@@ -3,6 +3,7 @@ import NewsItem from './NewsItem';
 import styled from 'styled-components';
 import axios from 'axios';
 
+
 const NewsListBlock = styled.div`
   box-sizing: border-box;
   padding-bottom: 3rem;
@@ -28,14 +29,15 @@ const NewsList = ({category}) => {
 
   useEffect(() => {
     try{
+      setLoading(true);
       const fetchData = async () => {
-        setLoading(true);
         const query = category === 'all' ? '' : `&category=${category}`;
         const response = await axios.get(
-          `https://newsapi.org/v2/top-headlines?country=kr${query}&apiKey=95dd9e7aee234b2595c98eb9a7fa59c5`,
+          // `https://newsapi.org/v2/top-headlines?country=kr${query}&apiKey=95dd9e7aee234b2595c98eb9a7fa59c5`,
+          `https://newsapi.org/v2/top-headlines?country=us${query}&apiKey=3e3041e3f41848b5a0a96b6f28776a3d`
         );
         setArticles(response.data.articles);
-        setLoading(false);
+        setLoading(false); // false를 안하면 데이터는 계속 로딩됨 => 429 Error 유발 (일정 시간이 지나야 풀림)
       };
       fetchData();
     }catch(e){
