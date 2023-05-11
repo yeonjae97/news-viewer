@@ -27,16 +27,20 @@ const NewsList = ({category}) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      const query = category === 'all' ? '' : `&category=${category}`;
-      const response = await axios.get(
-        `https://newsapi.org/v2/top-headlines?country=us${query}&apiKey=95dd9e7aee234b2595c98eb9a7fa59c5`,
-      );
-      setArticles(response.data.articles);
-      setLoading(false);
-    };
-    fetchData();
+    try{
+      const fetchData = async () => {
+        setLoading(true);
+        const query = category === 'all' ? '' : `&category=${category}`;
+        const response = await axios.get(
+          `https://newsapi.org/v2/top-headlines?country=kr${query}&apiKey=95dd9e7aee234b2595c98eb9a7fa59c5`,
+        );
+        setArticles(response.data.articles);
+        setLoading(false);
+      };
+      fetchData();
+    }catch(e){
+      console.log(e);
+    }
   },[category]);
 
   if(loading){
@@ -47,8 +51,6 @@ const NewsList = ({category}) => {
   }
   return (
     <NewsListBlock>
-      
-
       {articles.map(article => (
         <NewsItem key={article.url} article={article} />
       ))}
