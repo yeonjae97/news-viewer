@@ -1,25 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import axios from '../node_modules/axios/index';
 
-function App() {
+const App = () => {
+  const [data, setData] = useState(null);
+  const onClick = async () => {
+    // axios.get("https://jsonplaceholder.typicode.com/todos/1")
+    // .then(response => {
+    //   setData(response.data)
+    // });
+    try{
+
+      const response = await axios.get(
+        "https://newsapi.org/v2/top-headlines?country=kr&apiKey=95dd9e7aee234b2595c98eb9a7fa59c5"
+      )
+      setData(response.data);
+    }catch(e){
+      console.log(e);
+    }
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <div>
+        <button onClick={onClick}>불러오기</button>
+      </div>
+      {data && <textarea rows={7} value={JSON.stringify(data, null, 2)} readOnly={true} />} 
     </div>
   );
-}
+};
 
 export default App;
